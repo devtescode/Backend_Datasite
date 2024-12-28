@@ -61,7 +61,7 @@ module.exports.userRegister = async (req, res) => {
                         <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" style="width: 100%; max-width: 600px; margin: auto; background-color: #ffffff; padding: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
                             <tr>
                                 <td align="center">
-                                    <h1 style="color: #333333;">PETPORT</h1>
+                                    <h1 style="color: #333333;">DATASUB</h1>
                                 </td>
                             </tr>
                             <tr>
@@ -93,7 +93,7 @@ module.exports.userRegister = async (req, res) => {
             const newUser = new Userschema(req.body);
             await newUser.save();
             console.log("User saved");
-            res.send({ status: true, message: "Success" });
+            res.send({ status: true, message: "Successfully Registered" });
         }
     } catch (err) {
         if (err.code === 11000 && err.keyPattern && err.keyPattern.Email) {
