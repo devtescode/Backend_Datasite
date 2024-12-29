@@ -18,6 +18,8 @@
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.9.1",
-    "nodemailer": "^6.9.16"
+    "nodemailer": "^6.9.16",
+    "ua-parser-js": "^2.0.0",
+    "user-agent": "^1.0.4"
   }
 }
