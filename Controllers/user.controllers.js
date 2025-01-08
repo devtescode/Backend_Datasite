@@ -149,7 +149,7 @@ module.exports.userLogin = (req, res) => {
                 }
                 res.status(200).json({ message: "Login Success", status: true, token, userData })
                 // console.log("user success texting mode", userData)
-                console.log(token);
+                console.log("My backend token", token);
                 const mailOptions = {
                     from: process.env.USER_EMAIL,
                     to: req.body.Email,
@@ -203,3 +203,34 @@ module.exports.userLogin = (req, res) => {
         })
 }
 
+module.exports.dashboard = async (req, res) => {
+    const token = req.headers.authorization?.split(" ")[1];
+
+    if (!token) {
+        return res.status(401).send({ status: false, message: "Authorization token missing" });
+    }
+
+    try {
+        // Verify the token
+        const decoded = jwt.verify(token, secret);
+        const user = await Userschema.findById(decoded.id);
+        console.log("user get", user);
+        
+        if (!user) {
+            return res.status(404).send({ status: false, message: "User not found" });
+        }
+
+        // Send user data
+        res.send({
+            status: true,
+            message: "Token verified successfully",
+            user: user.toObject(),
+        });
+    } catch (err) {
+        console.error("Error:", err);
+        if (err.name === 'JsonWebTokenError') {
+            return res.status(401).send({ status: false, message: "Invalid token" });
+        }
+        res.status(500).send({ status: false, message: "Internal server error" });
+    }
+}
