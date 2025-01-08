@@ -213,9 +213,7 @@ module.exports.dashboard = async (req, res) => {
     try {
         // Verify the token
         const decoded = jwt.verify(token, secret);
-        const user = await Userschema.findById(decoded.id);
-        console.log("user get", user);
-        
+        const user = await Userschema.findById(decoded.id);        
         if (!user) {
             return res.status(404).send({ status: false, message: "User not found" });
         }
