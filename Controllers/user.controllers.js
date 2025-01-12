@@ -149,7 +149,7 @@ module.exports.userLogin = (req, res) => {
                 }
                 res.status(200).json({ message: "Login Success", status: true, token, userData })
                 // console.log("user success texting mode", userData)
-                console.log("My backend token", token);
+                // console.log("My backend token", token);
                 const mailOptions = {
                     from: process.env.USER_EMAIL,
                     to: req.body.Email,
@@ -231,4 +231,8 @@ module.exports.dashboard = async (req, res) => {
         }
         res.status(500).send({ status: false, message: "Internal server error" });
     }
+}
+
+module.exports.adminlogin = (req, res)=>{
+    console.log("hit admin page");
 }
