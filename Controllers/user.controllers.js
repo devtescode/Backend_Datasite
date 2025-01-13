@@ -4,8 +4,10 @@ const jwt = require("jsonwebtoken")
 const axios = require("axios")
 const env = require("dotenv")
 const secret = process.env.SECRET
+const adminsecret = process.env.ADMIN_SECRET
 const cloudinary = require("cloudinary")
 const mongoose = require("mongoose")
+const bcrypt = require("bcryptjs")
 const UAParser = require('ua-parser-js');
 env.config()
 
@@ -213,7 +215,7 @@ module.exports.dashboard = async (req, res) => {
     try {
         // Verify the token
         const decoded = jwt.verify(token, secret);
-        const user = await Userschema.findById(decoded.id);        
+        const user = await Userschema.findById(decoded.id);
         if (!user) {
             return res.status(404).send({ status: false, message: "User not found" });
         }
@@ -233,6 +235,47 @@ module.exports.dashboard = async (req, res) => {
     }
 }
 
-module.exports.adminlogin = (req, res)=>{
-    console.log("hit admin page");
-}
+
+
+
+
+module.exports.adminlogin = async (req, res) => {
+    const { Email, Password } = req.body;
+    const Admin_login = process.env.Admin_login
+    try {
+        // Check if the email matches the admin email
+        if (Email !== Admin_login) {
+            console.log("Access denied. Admin only.");
+            return res.status(403).json({ message: 'Access denied. Admin only.' });
+        }
+
+        // Find the user with this email
+        const user = await Userschema.findOne({ Email });
+        if (!user) {
+            console.log("Admin not found.");
+            return res.status(404).json({ message: 'Admin not found.' });
+        }
+
+        // Check if the password is correct
+        const isMatch = await bcrypt.compare(Password, user.Password);
+
+        if (!isMatch) {
+            console.log("Invalid credentials.");
+            return res.status(400).json({ message: 'Invalid credentials.' });
+        }
+
+        // Generate a JWT token
+        const token = jwt.sign({ id: user._id, isAdmin: true }, adminsecret, { expiresIn: '1h' });
+
+        res.status(200).json({
+            status: true,
+            message: 'Admin login successful.',
+            token,
+        });
+        
+
+    } catch (error) {
+        console.error('Server Error:', error);  // Log the actual error
+        res.status(500).json({ message: 'Server error.' });
+    }
+};
