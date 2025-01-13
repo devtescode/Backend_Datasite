@@ -248,7 +248,6 @@ module.exports.adminlogin = async (req, res) => {
             console.log("Access denied. Admin only.");
             return res.status(403).json({ message: 'Access denied. Admin only.' });
         }
-
         // Find the user with this email
         const user = await Userschema.findOne({ Email });
         if (!user) {
