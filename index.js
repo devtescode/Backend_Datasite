@@ -4,9 +4,10 @@ require('dotenv').config();
 const cors = require('cors');
 const userRoutes = require('./Routes/user.routes');
 // const paystackroute = require('./Controllers/paystackWebhook');
+const serviceRoutes = require("./Routes/serviceRoutes"); 
 
 const app = express();
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 3800;
 const URI = process.env.URI;
 
 // Middleware
@@ -24,6 +25,7 @@ mongoose
     });
 
 app.use('/userfunding', userRoutes);
+app.use('/services', serviceRoutes)
 
 // app.use('/api/paystack', 
 //   express.raw({ type: '*/*' }), 
