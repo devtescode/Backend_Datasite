@@ -7,7 +7,7 @@ const userRoutes = require('./Routes/user.routes');
 const serviceRoutes = require("./Routes/serviceRoutes"); 
 
 const app = express();
-const PORT = process.env.PORT || 3800;
+const PORT = process.env.PORT || 3000;
 const URI = process.env.URI;
 
 // Middleware
