@@ -74,14 +74,14 @@ exports.getuserscreatedataplans = async (req, res) => {
 };
 
 
-module.exports.userbuydata =async(req, res)=>{
+module.exports.userbuydata = async (req, res) => {
     try {
         const { network, dataType, plan, phoneNumber } = req.body;
         // console.log(req.body);
         // console.log(process.env.API_KEY_DATA);
-        
+
         // Your API request logic here
-        const response = await axios.post("", {
+        const response = await axios.post("https://sublink.ng/api/data/", {
             network,
             dataType,
             plan,
@@ -92,12 +92,40 @@ module.exports.userbuydata =async(req, res)=>{
                 "Content-Type": "application/json"
             }
         });
-       
-        
 
-
-        res.json(response.data);
+        console.log("Response data:", response.data);
+        return res
+            .status(200)
+            .send({ message: "Purchase successful", data: response.data });
     } catch (error) {
-        res.status(500).json({ message: "Error purchasing data", error });
+        console.error(
+            "Error:",
+            error.response ? error.response.data : error.message
+        );
+        console.log("Error processing purchase request")
+        return res.status(500).send("Error processing purchase request");
     }
 }
+// try {
+//   const response = await axios.post(
+//     "https://sublink.ng/api/data/",
+//     requestBody,
+//     {
+//       headers: {
+//         Authorization: Token ${process.env.SUBLINK_AUTH_TOKEN},
+//         "Content-Type": "application/json",
+//       },
+//     }
+//   );
+
+//   console.log("Response data:", response.data);
+//   return res
+//     .status(200)
+//     .send({ message: "Purchase successful", data: response.data });
+// } catch (error) {
+//   console.error(
+//     "Error:",
+//     error.response ? error.response.data : error.message
+//   );
+//   return res.status(500).send("Error processing purchase request");
+// }//
