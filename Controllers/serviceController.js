@@ -1,4 +1,7 @@
+const { default: axios } = require("axios");
 const Service = require("../models/Service");
+const env = require("dotenv")
+env.config()
 
 
 exports.createdataplans = async (req, res) => {
@@ -69,3 +72,32 @@ exports.getuserscreatedataplans = async (req, res) => {
         res.status(500).json({ message: "Error fetching plans", error: error.message });
     }
 };
+
+
+module.exports.userbuydata =async(req, res)=>{
+    try {
+        const { network, dataType, plan, phoneNumber } = req.body;
+        // console.log(req.body);
+        // console.log(process.env.API_KEY_DATA);
+        
+        // Your API request logic here
+        const response = await axios.post("", {
+            network,
+            dataType,
+            plan,
+            phoneNumber
+        }, {
+            headers: {
+                "Authorization": `Bearer ${process.env.API_KEY_DATA}`,
+                "Content-Type": "application/json"
+            }
+        });
+       
+        
+
+
+        res.json(response.data);
+    } catch (error) {
+        res.status(500).json({ message: "Error purchasing data", error });
+    }
+}
